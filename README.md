@@ -17,4 +17,4 @@ npm install
 
 ## Proyecto
 
-https://github.com/epmyas2022/win-7-os/blob/main/video.mp4
+![Captura de pantalla del proyecto](video.gif)
