@@ -17,4 +17,4 @@ npm install
 
 ## Proyecto
 
-<video controls src="video.mp4" title="Title"></video>
+https://github.com/epmyas2022/win-7-os/blob/main/video.mp4
