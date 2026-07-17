@@ -12,6 +12,7 @@
       <p v-if="!hiddenTitle" :style="styleTitle">{{ name }}</p>
     </a>
     <Window
+      v-if="id && render"
       :id="id"
       :title="name"
       v-model="isWindowOpen"
@@ -35,10 +36,13 @@ const props = defineProps<ApplicationInterface>()
 
 const isWindowOpen = computed({
   get() {
+    if (!props.id) {
+      return false
+    }
     return store.getVisibleProgram(props.id)
   },
   set(value: boolean) {
-    if (!value) {
+    if (!value && props.id) {
       store.removeProgramActive(props.id)
     }
   },
@@ -46,7 +50,12 @@ const isWindowOpen = computed({
 
 const open = async () => {
   await nextTick()
-  store.addProgramActive(props.id)
+
+  if (props.id) {
+    return store.addProgramActive(props.id)
+  }
+
+  props.app?.().run()
 }
 </script>
 

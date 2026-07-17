@@ -85,7 +85,21 @@ export const useWindowStore = defineStore('windowStore', () => {
   }
 
   function getPinnedApplications() {
-    return applications.filter((app) => app.pinned && !existsProgramActive(app.id))
+    return applications.filter(
+      (app: ApplicationInterface) => !app.app && app.pinned && !existsProgramActive(app.id),
+    )
+  }
+
+  function createApp(app: Omit<ApplicationInterface, 'id'>) {
+    const newApp = {
+      ...app,
+      id: Math.floor(Math.random() * 1000000),
+      run: () => {
+        addProgramActive(newApp.id)
+      },
+    }
+    applications.push(newApp as ApplicationInterface)
+    return newApp
   }
 
   return {
@@ -98,5 +112,6 @@ export const useWindowStore = defineStore('windowStore', () => {
     existsProgramActive,
     getVisibleProgram,
     getPinnedApplications,
+    createApp,
   }
 })

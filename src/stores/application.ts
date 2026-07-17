@@ -11,14 +11,21 @@ import RecycleBinView from '@/ui/system/RecycleBinView.vue'
 import ProfileView from '@/ui/system/ProfileView.vue'
 import CmdView from '@/ui/system/CmdView.vue'
 
+import { useApp } from '@/composable/useApp'
+
 export const useApplicationStore = defineStore('application', () => {
-  const applications = ref<ApplicationInterface[]>([
+  const { notepadApp } = useApp()
+
+  const applications = ref<ApplicationInterface[]>([])
+
+  applications.value = [
     {
       id: 13,
       name: 'Recycle Bin',
       icon: '/icons/gnome-fs-trash-empty.png',
       type: 'application',
       pinned: true,
+      desktop: true,
       size: { width: 600, height: 420 },
       render: {
         props: {},
@@ -29,6 +36,7 @@ export const useApplicationStore = defineStore('application', () => {
     {
       id: 1,
       name: 'Readme.txt',
+      desktop: true,
       icon: '/icons/txt.png',
       type: 'document',
       size: { width: 600, height: 400 },
@@ -41,6 +49,7 @@ export const useApplicationStore = defineStore('application', () => {
     {
       id: 2,
       name: 'About me.pdf',
+      desktop: true,
       icon: '/icons/application-pdf.png',
       type: 'document',
       size: { width: 700, height: 500 },
@@ -56,6 +65,7 @@ export const useApplicationStore = defineStore('application', () => {
       name: 'Desktop',
       type: 'folder',
       icon: '/icons/folder-desktop.png',
+      desktop: true,
       size: { width: 600, height: 400 },
       render: {
         props: {
@@ -97,6 +107,7 @@ export const useApplicationStore = defineStore('application', () => {
       id: 5,
       name: 'Documents',
       type: 'folder',
+      desktop: true,
       icon: '/icons/folder-images.png',
       size: { width: 600, height: 400 },
       render: {
@@ -107,15 +118,16 @@ export const useApplicationStore = defineStore('application', () => {
       },
       children: [
         {
-          id: 6,
           parentId: 5,
-          name: 'Resume.docx',
+          name: 'humans.txt',
           type: 'document',
           icon: '/icons/txt.png',
-          render: {
-            props: { content: '<h1>Resume</h1><p>This is a simple resume file.</p>' },
-            component: markRaw(NotepadView),
-          },
+          app: () =>
+            notepadApp(
+              'https://raw.githubusercontent.com/devtooligan/awesome-ascii-art/refs/heads/main/animals.txt',
+              false,
+              true,
+            ),
         },
 
         {
@@ -137,6 +149,7 @@ export const useApplicationStore = defineStore('application', () => {
       name: 'File Explorer',
       icon: '/icons/file-explorer.png',
       type: 'application',
+      desktop: true,
       pinned: true,
       size: { width: 680, height: 460 },
       render: {
@@ -150,6 +163,7 @@ export const useApplicationStore = defineStore('application', () => {
       name: 'Computer',
       icon: '/icons/computer.png',
       type: 'application',
+      desktop: true,
       pinned: true,
       size: { width: 560, height: 420 },
       render: {
@@ -163,6 +177,7 @@ export const useApplicationStore = defineStore('application', () => {
       name: 'Internet Explorer',
       icon: '/icons/explorer.png',
       type: 'application',
+      desktop: true,
       pinned: true,
       size: { width: 900, height: 620 },
       render: {
@@ -176,6 +191,7 @@ export const useApplicationStore = defineStore('application', () => {
       name: 'Image Viewer',
       icon: '/icons/image-viewer.png',
       type: 'application',
+      desktop: true,
       pinned: false,
       size: { width: 700, height: 520 },
       render: {
@@ -190,6 +206,7 @@ export const useApplicationStore = defineStore('application', () => {
       name: 'Profile',
       icon: '/icons/profile-info.png',
       type: 'application',
+      desktop: true,
       pinned: false,
       size: { width: 760, height: 520 },
       render: {
@@ -245,6 +262,7 @@ export const useApplicationStore = defineStore('application', () => {
       icon: '/icons/utilities-terminal.png',
       type: 'application',
       pinned: true,
+      desktop: true,
       size: { width: 680, height: 400 },
       render: {
         props: {
@@ -268,7 +286,7 @@ export const useApplicationStore = defineStore('application', () => {
         component: markRaw(CmdView),
       },
     },
-  ])
+  ]
 
   return {
     applications,

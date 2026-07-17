@@ -4,11 +4,21 @@ import Option from './components/OptionComponent.vue'
 import Application from './components/ApplicationComponent.vue'
 import { useContextMenu } from './composable/useWindow.ts'
 import { useWindowStore } from './stores/window.ts'
+import { useApp } from './composable/useApp.ts'
 
 const { showOption, coordinates, handleContextMenu } = useContextMenu()
 const store = useWindowStore()
+const { notepadApp } = useApp()
 
 const applications = store.applications
+
+const Readme = notepadApp(
+  'https://raw.githubusercontent.com/github/docs/main/README.md',
+  false,
+  true,
+)
+
+Readme.run()
 </script>
 
 <template>
@@ -20,17 +30,18 @@ const applications = store.applications
     >
       <Menu />
       <div class="application-container">
-        <Application
-          v-for="app in applications"
-          :show="app.show"
-          :key="app.id"
-          :id="app.id"
-          :name="app.name"
-          :icon="app.icon"
-          :type="app.type"
-          :render="app.render"
-          :size="app.size"
-        />
+        <template v-for="app in applications.filter((app) => !app.app)" :key="app.id">
+          <Application
+            v-show="app.desktop"
+            :show="app.show"
+            :id="app.id"
+            :name="app.name"
+            :icon="app.icon"
+            :type="app.type"
+            :render="app.render"
+            :size="app.size"
+          />
+        </template>
       </div>
     </div>
   </div>

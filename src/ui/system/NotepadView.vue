@@ -7,14 +7,43 @@
       <li role="menuitem" tabindex="0">Help</li>
     </ul>
 
-    <div class="notepad-content has-scrollbar" contenteditable="true" v-html="content"></div>
+    <div class="notepad-content has-scrollbar" contenteditable="true" v-html="contentUrl"></div>
   </div>
 </template>
 
 <script setup lang="ts">
-defineProps<{
+import { watch, ref } from 'vue'
+import { marked } from 'marked'
+
+const contentUrl = ref<string | null>(null)
+const props = defineProps<{
   content: string
+  showContentUrl?: boolean
 }>()
+
+function isUrl(str: string): boolean {
+  try {
+    new URL(str)
+    return true
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  } catch (_) {
+    return false
+  }
+}
+
+watch(
+  () => props.showContentUrl,
+  async (newVal) => {
+    if (newVal && isUrl(props.content) && props.showContentUrl) {
+      const res = await fetch(props.content)
+      const text = await res.text()
+      return (contentUrl.value = await marked.setOptions({ breaks: true }).parse(text))
+    }
+
+    contentUrl.value = props.content
+  },
+  { immediate: true },
+)
 </script>
 
 <style scoped>
@@ -32,5 +61,9 @@ defineProps<{
   padding: 10px;
   overflow-y: auto;
   max-height: calc(100% - 30px);
+}
+
+.notepad-content :deep(p) {
+  margin-top: 10px;
 }
 </style>
