@@ -45,7 +45,10 @@ export const useApplicationStore = defineStore('application', () => {
       type: 'document',
       size: { width: 600, height: 400 },
       render: {
-        props: { content: '<h1>Readme</h1><p>This is a simple readme file.</p>' },
+        props: {
+          content: `${import.meta.resolve('/assets/Sample.md')}`,
+          showContentUrl: true,
+        },
         component: markRaw(NotepadView),
       },
     },
