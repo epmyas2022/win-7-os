@@ -69,11 +69,13 @@ watch([pos, maximized], () => {
   if (pos || maximized) store.bringToFrontProgram(props.id)
 })
 
-watch(visible, (newValue) => {
+/* watch(visible, (newValue) => {
   if (!newValue) {
     return store.removeProgramActive(props.id)
   }
-})
+
+
+}) */
 </script>
 
 <style scoped>

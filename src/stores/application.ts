@@ -10,12 +10,15 @@ import ImageView from '@/ui/system/ImageView.vue'
 import RecycleBinView from '@/ui/system/RecycleBinView.vue'
 import ProfileView from '@/ui/system/ProfileView.vue'
 import CmdView from '@/ui/system/CmdView.vue'
-import MinesweeperView from '@/ui/system/MinesweeperView.vue'
+import MinesweeperView from '@/ui/games/MinesweeperView.vue'
+import VideoPlayerView from '@/ui/system/VideoPlayerView.vue'
 
 import { useApp } from '@/composable/useApp'
+import DoomView from '@/ui/games/DoomView.vue'
+import PaintView from '@/ui/system/PaintView.vue'
 
 export const useApplicationStore = defineStore('application', () => {
-  const { notepadApp } = useApp()
+  const { notepadApp, videoPlayerApp } = useApp()
 
   const applications = ref<ApplicationInterface[]>([])
 
@@ -99,6 +102,19 @@ export const useApplicationStore = defineStore('application', () => {
                 props: { src: '/assets/Img0_(Windows_7).jpg', title: 'Img0_(Windows_7).jpg' },
                 component: markRaw(ImageView),
               },
+            },
+
+            {
+              parentId: 9,
+              name: 'Video.mp4',
+              type: 'document',
+              icon: '/icons/wmp.png',
+              app: () =>
+                videoPlayerApp(
+                  'https://avtshare01.rz.tu-ilmenau.de/avt-vqdb-uhd-1/test_1/segments/vegetables_tuil_200kbps_360p_59.94fps_hevc.mp4',
+                  'Video.mp4',
+                  false,
+                ),
             },
           ],
         },
@@ -299,6 +315,50 @@ export const useApplicationStore = defineStore('application', () => {
       render: {
         props: {},
         component: markRaw(MinesweeperView),
+      },
+    },
+
+    {
+      id: 17,
+      name: 'VLC media player',
+      icon: '/icons/wmp.png',
+      type: 'application',
+      pinned: true,
+      desktop: true,
+      size: { width: 700, height: 480 },
+      render: {
+        props: {
+          src: 'https://avtshare01.rz.tu-ilmenau.de/avt-vqdb-uhd-1/test_1/segments/bigbuck_bunny_8bit_15000kbps_1080p_60.0fps_h264.mp4',
+        },
+        component: markRaw(VideoPlayerView),
+      },
+    },
+
+    {
+      id: 18,
+      name: 'Doom',
+      icon: '/icons/doom.png',
+      type: 'application',
+      pinned: false,
+      desktop: true,
+      size: { width: 590, height: 440 },
+      render: {
+        props: {},
+        component: markRaw(DoomView),
+      },
+    },
+
+    {
+      id: 19,
+      name: 'MS Paint',
+      icon: '/icons/MSPaint.webp',
+      type: 'application',
+      pinned: false,
+      desktop: true,
+      size: { width: 700, height: 400 },
+      render: {
+        props: {},
+        component: markRaw(PaintView),
       },
     },
   ]

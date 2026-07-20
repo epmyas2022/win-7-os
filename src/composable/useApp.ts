@@ -1,11 +1,12 @@
 import { useWindowStore } from '@/stores/window'
 import NotepadView from '@/ui/system/NotepadView.vue'
+import VideoPlayerView from '@/ui/system/VideoPlayerView.vue'
 import { markRaw } from 'vue'
 
 export function useApp() {
   const notepadApp = function (
     file: string,
-    desktop: boolean = true,
+    desktop: boolean = false,
     showContentUrl: boolean = false,
   ) {
     const regex = /([^/?#]+)\.([a-zA-Z0-9]+)(?=$|[?#])/
@@ -23,7 +24,22 @@ export function useApp() {
     })
   }
 
+  const videoPlayerApp = function (src: string, title: string, desktop: boolean = false) {
+    return useWindowStore().createApp({
+      name: title,
+      desktop: desktop,
+      icon: '/icons/wmp.png',
+      type: 'application',
+      size: { width: 600, height: 450 },
+      render: {
+        props: { src, title },
+        component: markRaw(VideoPlayerView),
+      },
+    })
+  }
+
   return {
     notepadApp,
+    videoPlayerApp,
   }
 }

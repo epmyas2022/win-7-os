@@ -4,19 +4,19 @@ import Option from './components/OptionComponent.vue'
 import Application from './components/ApplicationComponent.vue'
 import { useContextMenu } from './composable/useWindow.ts'
 import { useWindowStore } from './stores/window.ts'
-import { useApp } from './composable/useApp.ts'
-
+/* import { useApp } from './composable/useApp.ts'
+ */
 const { showOption, coordinates, handleContextMenu } = useContextMenu()
 const store = useWindowStore()
-const { notepadApp } = useApp()
-
-const Readme = notepadApp(
+/* const { notepadApp } = useApp()
+ */
+/* const Readme = notepadApp(
   'https://raw.githubusercontent.com/github/docs/main/README.md',
   false,
   true,
 )
 
-Readme.run()
+Readme.run() */
 </script>
 
 <template>

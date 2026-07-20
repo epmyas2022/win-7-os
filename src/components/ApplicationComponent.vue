@@ -42,7 +42,7 @@ const isWindowOpen = computed({
     return store.getVisibleProgram(props.id)
   },
   set(value: boolean) {
-    if (!value && props.id) {
+    if (!value && props.id && !props.app) {
       store.removeProgramActive(props.id)
     }
   },

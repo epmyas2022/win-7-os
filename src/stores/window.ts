@@ -62,7 +62,7 @@ export const useWindowStore = defineStore('windowStore', () => {
 
   function removeProgramActive(programId: number) {
     programActives.value = programActives.value.filter((p) => p.id !== programId)
-    bringToFront.value = null
+    bringToFront.value = 0
   }
 
   function getVisibleProgram(programId: number) {
