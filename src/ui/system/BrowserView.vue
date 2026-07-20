@@ -21,7 +21,7 @@
           type="text"
           placeholder="http://"
           spellcheck="false"
-          @focus="(event: FocusEvent) => (event.target as HTMLInputElement).select() "
+          @focus="(event: FocusEvent) => (event.target as HTMLInputElement).select()"
         />
         <button type="submit" class="go-btn">Go</button>
       </form>
@@ -53,7 +53,9 @@
         <p class="browser-empty-sub">Type a URL above or pick a favorite.</p>
       </div>
 
-      <div v-if="loading" class="browser-loading">Loading...</div>
+      <div v-if="loading" class="browser-loading">
+        <span class="loader animate" aria-label="Processing your request"></span>
+      </div>
     </div>
 
     <!-- Status bar -->
