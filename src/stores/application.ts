@@ -10,6 +10,7 @@ import ImageView from '@/ui/system/ImageView.vue'
 import RecycleBinView from '@/ui/system/RecycleBinView.vue'
 import ProfileView from '@/ui/system/ProfileView.vue'
 import CmdView from '@/ui/system/CmdView.vue'
+import MinesweeperView from '@/ui/system/MinesweeperView.vue'
 
 import { useApp } from '@/composable/useApp'
 
@@ -284,6 +285,20 @@ export const useApplicationStore = defineStore('application', () => {
           },
         },
         component: markRaw(CmdView),
+      },
+    },
+
+    {
+      id: 16,
+      name: 'Minesweeper',
+      icon: '/icons/minesweeper.png',
+      type: 'application',
+      pinned: true,
+      desktop: true,
+      size: { width: 650, height: 400 },
+      render: {
+        props: {},
+        component: markRaw(MinesweeperView),
       },
     },
   ]

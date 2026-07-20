@@ -7,13 +7,13 @@
       </a>
 
       <div v-for="app in store.getPinnedApplications()" :key="app.id" class="menu-item">
-        <a @click.stop="store.addProgramActive(app.id)">
+        <a @click.stop="app.id && store.addProgramActive(app.id)">
           <img :src="app.icon" :alt="app.name" />
         </a>
       </div>
 
       <div v-for="program in store.programActives" :key="program.id" class="menu-item active">
-        <a @click.stop="store.bringToFrontProgram(program.id)">
+        <a @click.stop="program.id && store.bringToFrontProgram(program.id)">
           <img :src="program.icon" :alt="program.name" />
         </a>
       </div>

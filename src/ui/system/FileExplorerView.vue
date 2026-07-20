@@ -40,42 +40,10 @@
             <span>{{ item.name }}</span>
           </a>
 
-          <ApplicationComponent
-            v-if="item.type !== 'folder' && item.id"
-            :id="item.id"
-            :show="item.show"
-            :key="item.id"
-            :name="item.name"
-            :icon="item.icon"
-            :type="item.type"
-            :render="item.render"
-            :size="item.size"
-            :style-title="{
-              color: 'dodgerblue',
-            }"
-            :icon-size="{
-              width: 32,
-              height: 32,
-            }"
-          />
-
-          <ApplicationComponent
-            v-if="item.type !== 'folder' && item.app"
-            :show="item.show"
-            :key="item.id"
-            :name="item.name"
-            :icon="item.icon"
-            :type="item.type"
-            :app="item.app"
-            :size="item.size"
-            :style-title="{
-              color: 'dodgerblue',
-            }"
-            :icon-size="{
-              width: 32,
-              height: 32,
-            }"
-          />
+          <a v-if="item.type !== 'folder'" href="#" @click.stop="navigate(item)">
+            <img :src="item.icon" alt="File Icon" />
+            <span>{{ item.name }}</span>
+          </a>
         </div>
       </div>
     </div>
@@ -91,7 +59,6 @@
 import { ref, computed } from 'vue'
 import { useWindowStore } from '../../stores/window'
 import type { ApplicationInterface } from '../../types/window'
-import ApplicationComponent from '@/components/ApplicationComponent.vue'
 const props = defineProps<{
   indexNode?: number
 }>()
@@ -113,7 +80,7 @@ function navigate(node: ApplicationInterface) {
   if (node.app) {
     return node.app().run()
   }
-
+  console.log(node)
   store.addProgramActive(node.id)
 }
 </script>

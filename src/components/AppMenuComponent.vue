@@ -14,7 +14,12 @@
         <!-- Left column: pinned + recently active programs -->
         <div class="sm-left">
           <ul class="sm-list">
-            <li v-for="app in pinnedApps" :key="app.id" class="sm-item" @click="open_(app.id)">
+            <li
+              v-for="app in pinnedApps"
+              :key="app.id"
+              class="sm-item"
+              @click="app.id && open_(app.id)"
+            >
               <img :src="app.icon" :alt="app.name" class="sm-icon" />
               <span>{{ app.name }}</span>
             </li>
@@ -35,7 +40,7 @@
               v-for="place in systemPlaces"
               :key="place.id"
               class="sm-item sm-item--right"
-              @click="open_(place.id)"
+              @click="place.id && open_(place.id)"
             >
               <img :src="place.icon" :alt="place.name" class="sm-icon" />
               <span>{{ place.name }}</span>
@@ -65,9 +70,7 @@ const emit = defineEmits<{ close: []; open: [id: number] }>()
 const store = useWindowStore()
 
 // ponytail: show all pinned apps in start menu (not filtered by active like taskbar)
-const pinnedApps = computed(() =>
-  store.applications.filter((a: ApplicationInterface) => a.pinned),
-)
+const pinnedApps = computed(() => store.applications.filter((a: ApplicationInterface) => a.pinned))
 
 // ponytail: system places reuse existing app entries by id
 const systemPlaces = computed(() => {

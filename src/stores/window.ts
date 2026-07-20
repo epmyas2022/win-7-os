@@ -8,6 +8,12 @@ export const useWindowStore = defineStore('windowStore', () => {
 
   const programActives = ref<ApplicationInterface[]>([])
 
+  function getAllApplications(): ApplicationInterface[] {
+    const children = getChildrens(applications)
+
+    return [...applications, ...children]
+  }
+
   function getChildrens(array: ApplicationInterface[]): ApplicationInterface[] {
     const result: ApplicationInterface[] = []
 
@@ -34,15 +40,6 @@ export const useWindowStore = defineStore('windowStore', () => {
     const all = [...applications, ...children]
 
     const find = all.find((app) => app.id === id)
-
-    /*     if (deepSearch && !find && children.length > 0) {
-      console.log('este valor no coincide', id, applications)
-      return findApplicationById(
-        id,
-        children.flatMap((app) => app.children || []),
-      )
-    }
- */
 
     return find
   }
@@ -81,21 +78,22 @@ export const useWindowStore = defineStore('windowStore', () => {
   }
 
   function existsProgramActive(programId: number) {
-    return findApplicationById(programId, programActives.value, false) !== undefined
+    return findApplicationById(programId, programActives.value) !== undefined
   }
 
-  function getPinnedApplications() {
+  function getPinnedApplications(): ApplicationInterface[] {
     return applications.filter(
-      (app: ApplicationInterface) => !app.app && app.pinned && !existsProgramActive(app.id),
+      (app: ApplicationInterface) => app.render && app.pinned && !existsProgramActive(app.id),
     )
   }
 
   function createApp(app: Omit<ApplicationInterface, 'id'>) {
+    const id = Math.floor(Math.random() * 1000000)
     const newApp = {
       ...app,
-      id: Math.floor(Math.random() * 1000000),
+      id,
       run: () => {
-        addProgramActive(newApp.id)
+        addProgramActive(id)
       },
     }
     applications.push(newApp as ApplicationInterface)
@@ -113,5 +111,6 @@ export const useWindowStore = defineStore('windowStore', () => {
     getVisibleProgram,
     getPinnedApplications,
     createApp,
+    getAllApplications,
   }
 })

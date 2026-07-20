@@ -10,8 +10,6 @@ const { showOption, coordinates, handleContextMenu } = useContextMenu()
 const store = useWindowStore()
 const { notepadApp } = useApp()
 
-const applications = store.applications
-
 const Readme = notepadApp(
   'https://raw.githubusercontent.com/github/docs/main/README.md',
   false,
@@ -30,8 +28,12 @@ Readme.run()
     >
       <Menu />
       <div class="application-container">
-        <template v-for="app in applications.filter((app) => !app.app)" :key="app.id">
+        <template
+          v-for="(app, key) in store.getAllApplications().filter((app) => app.render)"
+          :key="key"
+        >
           <Application
+            v-if="app.render"
             v-show="app.desktop"
             :show="app.show"
             :id="app.id"
