@@ -286,7 +286,7 @@ export const useApplicationStore = defineStore('application', () => {
       size: { width: 680, height: 400 },
       render: {
         props: {
-          initialDir: 'C:\\Users\\User',
+          initialDir: 'C:\\',
           // Custom commands example — add your own here
           commands: {
             whoami: (_args: string[], ctx: { push: (msg: string) => void }) => {

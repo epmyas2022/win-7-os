@@ -28,6 +28,8 @@
 
 <script setup lang="ts">
 import { ref, nextTick, onMounted } from 'vue'
+import { useWindowStore } from '../../stores/window'
+import type { ApplicationInterface } from '@/types/window'
 
 // ── Types ──
 export interface CmdContext {
@@ -51,7 +53,11 @@ const output = ref<{ text: string; color?: string }[]>([])
 const inputText = ref('')
 const inputEl = ref<HTMLInputElement | null>(null)
 const outputEl = ref<HTMLElement | null>(null)
-const cwd = ref(props.initialDir ?? 'C:\\Users\\User')
+const cwd = ref(props.initialDir ?? 'C:\\')
+
+const store = useWindowStore()
+
+const tree = store.applications.filter((app) => app.type === 'folder')
 
 // ponytail: 16-color palette matches Windows CMD color codes
 const COLOR_MAP: Record<string, string> = {
@@ -80,6 +86,8 @@ const fgColor = ref('#c0c0c0')
 const cmdHistory = ref<string[]>([])
 let historyIdx = -1
 
+const cwdObject = ref<Record<string, ApplicationInterface>>({})
+
 // ── Helpers ──
 const ctx: CmdContext = {
   cwd,
@@ -105,16 +113,24 @@ async function scroll() {
   if (outputEl.value) outputEl.value.scrollTop = outputEl.value.scrollHeight
 }
 
-// ── Fake filesystem ──
-// ponytail: static tree, no real FS access possible in browser
-const FAKE_FS: Record<string, string[]> = {
-  'C:\\': ['Users', 'Windows', 'Program Files', 'pagefile.sys'],
-  'C:\\Users': ['User', 'Public'],
-  'C:\\Users\\User': ['Desktop', 'Documents', 'Downloads', 'AppData'],
-  'C:\\Users\\User\\Desktop': ['readme.txt', 'shortcut.lnk'],
-  'C:\\Users\\User\\Documents': ['resume.docx', 'notes.txt'],
-  'C:\\Windows': ['System32', 'SysWOW64', 'explorer.exe'],
+const readTree = (accumulate: Record<string, string[]>) => {
+  accumulate[cwd.value] = tree.map((app) => app.name)
+
+  const read = (node: ApplicationInterface, path: string) => {
+    accumulate[path] = node.children?.map((child) => child.name) ?? []
+    for (const child of node.children ?? []) {
+      if (child.type === 'folder') read(child, `${path}\\${child.name}`)
+
+      if (child.type !== 'folder') cwdObject.value[`${path}\\${child.name}`] = child
+    }
+  }
+  for (const app of tree) {
+    read(app, `${cwd.value}${app.name}`)
+  }
+  return accumulate
 }
+
+const FAKE_FS: Record<string, string[]> = readTree({})
 
 function listDir(path: string): string[] {
   const key = Object.keys(FAKE_FS).find((k) => k.toLowerCase() === path.toLowerCase())
@@ -135,11 +151,27 @@ const builtins: Record<string, CommandFn> = {
 
   echo: (args, { push }) => push(args.join(' ') || '&nbsp;'),
 
-  ver: (_args, { push }) => {
+  start(args, { push }) {
     push('&nbsp;')
     push('Microsoft Windows [Version 6.1.7601]')
     push('Copyright (c) 2009 Microsoft Corporation.  All rights reserved.')
     pushBlank()
+
+    if (!args[0]) {
+      push('The syntax of the command is incorrect.')
+      return
+    }
+    const app = cwdObject.value[`${cwd.value}\\${args[0]}`]
+    if (!app) {
+      push(`Could not find an application named "${args[0]}".`)
+      return
+    }
+
+    if (app.app) {
+      return app.app().run()
+    }
+
+    store.addProgramActive(app.id)
   },
 
   date: (_args, { push }) => {
@@ -155,12 +187,12 @@ const builtins: Record<string, CommandFn> = {
       push('The system cannot find the path specified.')
       return
     }
-    
+
     if (!args[0] || args[0] === '.') return
     if (args[0] === '..') {
       const parts = cwd.value.split('\\')
       if (parts.length > 1) parts.pop()
-      cwd.value = parts.join('\\') || 'C:\\'
+      cwd.value = parts.length !== 1 ? parts.join('\\') : 'C:\\'
       return
     }
     if (args[0].includes(':\\')) {
