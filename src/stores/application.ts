@@ -9,7 +9,6 @@ import BrowserView from '@/ui/system/BrowserView.vue'
 import ImageView from '@/ui/system/ImageView.vue'
 import RecycleBinView from '@/ui/system/RecycleBinView.vue'
 import ProfileView from '@/ui/system/ProfileView.vue'
-import CmdView from '@/ui/system/CmdView.vue'
 import MinesweeperView from '@/ui/games/MinesweeperView.vue'
 import VideoPlayerView from '@/ui/system/VideoPlayerView.vue'
 
@@ -18,7 +17,7 @@ import DoomView from '@/ui/games/DoomView.vue'
 import PaintView from '@/ui/system/PaintView.vue'
 
 export const useApplicationStore = defineStore('application', () => {
-  const { notepadApp, videoPlayerApp } = useApp()
+  const { notepadApp, videoPlayerApp, cmdApp } = useApp()
 
   const applications = ref<ApplicationInterface[]>([])
 
@@ -277,34 +276,27 @@ export const useApplicationStore = defineStore('application', () => {
     },
 
     {
-      id: 15,
-      name: 'Command Prompt',
+      name: 'Console',
       icon: '/icons/utilities-terminal.png',
       type: 'application',
       pinned: true,
+      show: true,
       desktop: true,
-      size: { width: 680, height: 400 },
-      render: {
-        props: {
-          initialDir: 'C:\\',
-          // Custom commands example — add your own here
-          commands: {
-            whoami: (_args: string[], ctx: { push: (msg: string) => void }) => {
-              ctx.push('USER-PC\\User')
-            },
-            ipconfig: (_args: string[], ctx: { push: (msg: string) => void }) => {
-              ctx.push('Windows IP Configuration')
-              ctx.push('&nbsp;')
-              ctx.push('Ethernet adapter Local Area Connection:')
-              ctx.push('   IPv4 Address. . . : 192.168.1.100')
-              ctx.push('   Subnet Mask . . . : 255.255.255.0')
-              ctx.push('   Default Gateway . : 192.168.1.1')
-              ctx.push('&nbsp;')
-            },
+      app: () =>
+        cmdApp({
+          whoami: (_args: string[], ctx: { push: (msg: string) => void }) => {
+            ctx.push('USER-PC\\User')
           },
-        },
-        component: markRaw(CmdView),
-      },
+          ipconfig: (_args: string[], ctx: { push: (msg: string) => void }) => {
+            ctx.push('Windows IP Configuration')
+            ctx.push('&nbsp;')
+            ctx.push('Ethernet adapter Local Area Connection:')
+            ctx.push('   IPv4 Address. . . : 192.168.1.100')
+            ctx.push('   Subnet Mask . . . : 255.255.255.0')
+            ctx.push('   Default Gateway . : 192.168.1.1')
+            ctx.push('&nbsp;')
+          },
+        }),
     },
 
     {

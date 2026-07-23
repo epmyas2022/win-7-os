@@ -91,6 +91,7 @@ export const useWindowStore = defineStore('windowStore', () => {
     const id = Math.floor(Math.random() * 1000000)
     const newApp = {
       ...app,
+
       id,
       run: () => {
         addProgramActive(id)

@@ -1,4 +1,5 @@
 import { useWindowStore } from '@/stores/window'
+import CmdView from '@/ui/system/CmdView.vue'
 import NotepadView from '@/ui/system/NotepadView.vue'
 import VideoPlayerView from '@/ui/system/VideoPlayerView.vue'
 import { markRaw } from 'vue'
@@ -38,8 +39,34 @@ export function useApp() {
     })
   }
 
+  const cmdApp = function (
+    commands: Record<
+      string,
+      (
+        _args: string[],
+        ctx: {
+          push: (msg: string) => void
+        },
+      ) => void
+    >,
+  ) {
+    return useWindowStore().createApp({
+      name: 'Command Prompt',
+      icon: '/icons/utilities-terminal.png',
+      type: 'application',
+      size: { width: 680, height: 400 },
+      render: {
+        props: {
+          initialDir: 'C:\\',
+          commands: commands,
+        },
+        component: markRaw(CmdView),
+      },
+    })
+  }
   return {
     notepadApp,
     videoPlayerApp,
+    cmdApp,
   }
 }

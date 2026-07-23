@@ -5,16 +5,10 @@
     <div v-if="open" class="start-menu">
       <!-- Body: left white + right translucent blue -->
       <div class="sm-body">
-
         <!-- LEFT: pinned apps list -->
         <div class="sm-left">
           <ul class="sm-list">
-            <li
-              v-for="app in pinnedApps"
-              :key="app.id"
-              class="sm-item"
-              @click="app.id && open_(app.id)"
-            >
+            <li v-for="app in pinnedApps" :key="app.id" class="sm-item" @click="open_(app)">
               <img :src="app.icon" :alt="app.name" class="sm-icon" />
               <span class="sm-item-name">{{ app.name }}</span>
               <!-- arrow indicator for apps with children -->
@@ -26,10 +20,10 @@
 
           <!-- All Programs row -->
           <div class="sm-all-programs" @click="$emit('close')">
-            <svg viewBox="0 0 16 16" width="16" height="16" style="flex-shrink:0">
-              <rect x="1" y="2" width="14" height="2" fill="currentColor"/>
-              <rect x="1" y="7" width="14" height="2" fill="currentColor"/>
-              <rect x="1" y="12" width="14" height="2" fill="currentColor"/>
+            <svg viewBox="0 0 16 16" width="16" height="16" style="flex-shrink: 0">
+              <rect x="1" y="2" width="14" height="2" fill="currentColor" />
+              <rect x="1" y="7" width="14" height="2" fill="currentColor" />
+              <rect x="1" y="12" width="14" height="2" fill="currentColor" />
             </svg>
             <span>All Programs</span>
             <span class="sm-arrow">▶</span>
@@ -39,8 +33,16 @@
           <div class="sm-search">
             <input type="text" placeholder="Search programs and files" class="sm-search-input" />
             <svg viewBox="0 0 16 16" width="14" height="14" class="sm-search-icon">
-              <circle cx="6" cy="6" r="4.5" fill="none" stroke="currentColor" stroke-width="1.8"/>
-              <line x1="10" y1="10" x2="14.5" y2="14.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <circle cx="6" cy="6" r="4.5" fill="none" stroke="currentColor" stroke-width="1.8" />
+              <line
+                x1="10"
+                y1="10"
+                x2="14.5"
+                y2="14.5"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
             </svg>
           </div>
         </div>
@@ -60,8 +62,10 @@
               v-for="place in systemPlaces"
               :key="place.id ?? place.name"
               class="sm-right-item"
-              @click="place.id && open_(place.id)"
-            >{{ place.name }}</li>
+              @click="place.id && open_(place)"
+            >
+              {{ place.name }}
+            </li>
             <li class="sm-right-sep" />
             <li class="sm-right-item">Control Panel</li>
             <li class="sm-right-item">Devices and Printers</li>
@@ -74,8 +78,14 @@
           <div class="sm-shutdown-row">
             <button class="sm-power-btn" title="Shut down">
               <svg viewBox="0 0 16 16" width="14" height="14">
-                <path d="M8 2 v5" stroke="white" stroke-width="2" stroke-linecap="round"/>
-                <path d="M5 3.8 A5.5 5.5 0 1 0 11 3.8" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+                <path d="M8 2 v5" stroke="white" stroke-width="2" stroke-linecap="round" />
+                <path
+                  d="M5 3.8 A5.5 5.5 0 1 0 11 3.8"
+                  fill="none"
+                  stroke="white"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                />
               </svg>
               Shut down
             </button>
@@ -107,9 +117,12 @@ const systemPlaces = computed(() => {
     .filter(Boolean) as ApplicationInterface[]
 })
 
-function open_(id: number) {
-  store.addProgramActive(id)
+function open_(app: ApplicationInterface) {
   emit('close')
+
+  if (!app.app) return store.addProgramActive(app.id)
+
+  app.app().run()
 }
 </script>
 
@@ -260,11 +273,7 @@ function open_(id: number) {
   display: flex;
   flex-direction: column;
   /* Aero glass translucent blue-gray */
-  background: linear-gradient(
-    to bottom,
-    rgba(70, 100, 140, 0.82) 0%,
-    rgba(55, 85, 125, 0.88) 100%
-  );
+  background: linear-gradient(to bottom, rgba(70, 100, 140, 0.82) 0%, rgba(55, 85, 125, 0.88) 100%);
   backdrop-filter: blur(6px);
   border-left: 1px solid rgba(255, 255, 255, 0.12);
 }

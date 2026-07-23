@@ -28,10 +28,7 @@ Readme.run() */
     >
       <Menu />
       <div class="application-container">
-        <template
-          v-for="(app, key) in store.getAllApplications().filter((app) => app.render)"
-          :key="key"
-        >
+        <template v-for="(app, key) in store.getAllApplications()" :key="key">
           <Application
             v-if="app.render"
             v-show="app.desktop"
@@ -41,6 +38,17 @@ Readme.run() */
             :icon="app.icon"
             :type="app.type"
             :render="app.render"
+            :size="app.size"
+          />
+
+          <Application
+            v-if="app.app"
+            :app="app.app"
+            v-show="app.desktop"
+            :show="app.show"
+            :name="app.name"
+            :icon="app.icon"
+            :type="app.type"
             :size="app.size"
           />
         </template>

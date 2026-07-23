@@ -1,15 +1,25 @@
 <template>
   <div class="cmd-root" :style="{ background: bgColor, color: fgColor }" @click="focusInput">
     <!-- Output history -->
+
     <div class="cmd-output" ref="outputEl">
       <div v-for="(line, i) in output" :key="i" class="cmd-line">
-        <span :style="{ color: line.color || fgColor }" v-html="line.text" />
+        <pre
+          tabindex="0"
+          :style="{ color: line.color || fgColor }"
+          class="ascii-art"
+          v-if="line.ascii"
+          >{{ line.text }}</pre
+        >
+        <span v-else :style="{ color: line.color || fgColor }" v-html="line.text" />
       </div>
     </div>
 
     <!-- Input row -->
     <div class="cmd-input-row">
-      <span class="cmd-prompt" :style="{ color: fgColor }">{{ cwd }}&gt;&nbsp;</span>
+      <span v-if="interactive" class="cmd-prompt" :style="{ color: fgColor }"
+        >{{ cwd }}&gt;&nbsp;</span
+      >
       <input
         ref="inputEl"
         v-model="inputText"
@@ -17,6 +27,7 @@
         :style="{ color: fgColor, caretColor: fgColor }"
         spellcheck="false"
         autocomplete="off"
+        @keydown.ctrl.c.prevent="clear"
         @keydown.enter="run"
         @keydown.up.prevent="historyUp"
         @keydown.down.prevent="historyDown"
@@ -30,11 +41,12 @@
 import { ref, nextTick, onMounted } from 'vue'
 import { useWindowStore } from '../../stores/window'
 import type { ApplicationInterface } from '@/types/window'
+import { FRAMES } from '@/helpers/frame'
 
 // ── Types ──
 export interface CmdContext {
   cwd: ReturnType<typeof ref<string>>
-  push: (text: string, color?: string) => void
+  push: (text: string, color?: string, ascii?: boolean) => void
   clear: () => void
   setColor: (bg: string, fg: string) => void
 }
@@ -49,11 +61,14 @@ const props = defineProps<{
 }>()
 
 // ── State ──
-const output = ref<{ text: string; color?: string }[]>([])
+const output = ref<{ text: string; color?: string; ascii: boolean }[]>([])
 const inputText = ref('')
 const inputEl = ref<HTMLInputElement | null>(null)
 const outputEl = ref<HTMLElement | null>(null)
 const cwd = ref(props.initialDir ?? 'C:\\')
+
+const interactive = ref<boolean>(true)
+const intervals = ref<number[]>([])
 
 const store = useWindowStore()
 
@@ -91,7 +106,7 @@ const cwdObject = ref<Record<string, ApplicationInterface>>({})
 // ── Helpers ──
 const ctx: CmdContext = {
   cwd,
-  push: (text, color) => output.value.push({ text, color }),
+  push: (text, color, ascii) => output.value.push({ text, color, ascii: ascii || false }),
   clear: () => {
     output.value = []
   },
@@ -111,6 +126,12 @@ function pushBlank() {
 async function scroll() {
   await nextTick()
   if (outputEl.value) outputEl.value.scrollTop = outputEl.value.scrollHeight
+}
+
+function clear() {
+  interactive.value = true
+  for (const id of intervals.value) clearInterval(id)
+  intervals.value = []
 }
 
 const readTree = (accumulate: Record<string, string[]>) => {
@@ -161,7 +182,19 @@ const builtins: Record<string, CommandFn> = {
       push('The syntax of the command is incorrect.')
       return
     }
-    const app = cwdObject.value[`${cwd.value}\\${args[0]}`]
+
+    const findByApp = (name: string) => {
+      const app = cwdObject.value[`${cwd.value}\\${args[0]}`]
+
+      if (!app) {
+        return store.applications
+          .filter((app) => app.type === 'application')
+          .find((app) => `${app.name.replaceAll(' ', '').toLowerCase()}.exe` === name.toLowerCase())
+      }
+
+      return app
+    }
+    const app = findByApp(args[0])
     if (!app) {
       push(`Could not find an application named "${args[0]}".`)
       return
@@ -176,6 +209,41 @@ const builtins: Record<string, CommandFn> = {
 
   date: (_args, { push }) => {
     push('The current date is: ' + new Date().toLocaleDateString())
+  },
+
+  animate(args, { push, clear }) {
+    let index = 0
+    const input = args[0] ?? 'parrot'
+
+    if (!FRAMES[input]) {
+      push(`The animation not supported: "${input}".`)
+      return
+    }
+    interactive.value = false
+
+    const colors = FRAMES[input].colors
+
+    const frames = FRAMES[input].ascii()
+
+    const fps = FRAMES[input].fps ?? 10
+
+    let ticks = frames[index]?.duration ?? 1
+
+    intervals.value.push(
+      setInterval(() => {
+        clear()
+        pushBlank()
+        const value = frames[index]
+        push(value?.frame ?? '', colors[index % colors.length], true)
+
+        ticks--
+
+        if (ticks <= 0) {
+          ticks = value?.duration ?? 1
+          index = (index + 1) % frames.length
+        }
+      }, 1000 / fps),
+    )
   },
 
   time: (_args, { push }) => {
@@ -293,7 +361,7 @@ function run() {
 
   const [name, ...args] = raw.split(/\s+/)
 
-  if (!name) return
+  if (!name || !interactive.value) return
 
   const cmd = (props.commands ?? {})[name.toLowerCase()] ?? builtins[name.toLowerCase()]
 
@@ -398,5 +466,16 @@ onMounted(() => {
   font-size: inherit;
   line-height: inherit;
   padding: 0;
+}
+
+.ascii-art {
+  width: 100%;
+  height: 100%;
+  font-family: 'Courier New', Consolas, Menlo, monospace;
+  white-space: pre;
+  overflow: hidden;
+  line-height: 1.1;
+  font-size: 12px;
+  margin: 0;
 }
 </style>
