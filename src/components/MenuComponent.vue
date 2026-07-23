@@ -133,8 +133,8 @@ const batteryTitle = computed(() =>
   border: none;
   cursor: pointer;
   padding: 0;
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -160,8 +160,8 @@ const batteryTitle = computed(() =>
 }
 
 .menu-item img {
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
   object-fit: cover;
 }
 

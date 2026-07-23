@@ -25,6 +25,7 @@ export const useApplicationStore = defineStore('application', () => {
     {
       id: 13,
       name: 'Recycle Bin',
+
       icon: '/icons/gnome-fs-trash-empty.png',
       type: 'application',
       pinned: true,
@@ -287,6 +288,7 @@ export const useApplicationStore = defineStore('application', () => {
           whoami: (_args: string[], ctx: { push: (msg: string) => void }) => {
             ctx.push('USER-PC\\User')
           },
+      
           ipconfig: (_args: string[], ctx: { push: (msg: string) => void }) => {
             ctx.push('Windows IP Configuration')
             ctx.push('&nbsp;')

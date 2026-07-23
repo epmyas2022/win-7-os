@@ -5,8 +5,8 @@
         :src="icon"
         :alt="name"
         :style="{
-          width: iconSize?.width ? iconSize.width + 'px' : '40px',
-          height: iconSize?.height ? iconSize.height + 'px' : '40px',
+          width: iconSize?.width ? iconSize.width + 'px' : '30px',
+          height: iconSize?.height ? iconSize.height + 'px' : '30px',
         }"
       />
       <p v-if="!hiddenTitle" :style="styleTitle">{{ name }}</p>

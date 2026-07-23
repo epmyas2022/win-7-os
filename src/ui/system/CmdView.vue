@@ -338,11 +338,6 @@ const builtins: Record<string, CommandFn> = {
     }
     push(`${args[0]}: Access is denied.`) // ponytail: no real file reading
   },
-
-  exit: () => {
-    // ponytail: can't close the window from here — emit would require defineEmits
-    push('Type "exit" to close the window from the OS controls.', '#ffff00')
-  },
 }
 
 // ── Command runner ──

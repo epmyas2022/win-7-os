@@ -19,32 +19,6 @@
           <div class="sm-sep" />
 
           <!-- All Programs row -->
-          <div class="sm-all-programs" @click="$emit('close')">
-            <svg viewBox="0 0 16 16" width="16" height="16" style="flex-shrink: 0">
-              <rect x="1" y="2" width="14" height="2" fill="currentColor" />
-              <rect x="1" y="7" width="14" height="2" fill="currentColor" />
-              <rect x="1" y="12" width="14" height="2" fill="currentColor" />
-            </svg>
-            <span>All Programs</span>
-            <span class="sm-arrow">▶</span>
-          </div>
-
-          <!-- Search bar -->
-          <div class="sm-search">
-            <input type="text" placeholder="Search programs and files" class="sm-search-input" />
-            <svg viewBox="0 0 16 16" width="14" height="14" class="sm-search-icon">
-              <circle cx="6" cy="6" r="4.5" fill="none" stroke="currentColor" stroke-width="1.8" />
-              <line
-                x1="10"
-                y1="10"
-                x2="14.5"
-                y2="14.5"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-              />
-            </svg>
-          </div>
         </div>
 
         <!-- RIGHT: user photo + system places + shutdown -->
@@ -75,7 +49,7 @@
           </ul>
 
           <!-- Shutdown row -->
-          <div class="sm-shutdown-row">
+          <!--     <div class="sm-shutdown-row">
             <button class="sm-power-btn" title="Shut down">
               <svg viewBox="0 0 16 16" width="14" height="14">
                 <path d="M8 2 v5" stroke="white" stroke-width="2" stroke-linecap="round" />
@@ -90,7 +64,7 @@
               Shut down
             </button>
             <button class="sm-power-arrow" title="More options">▶</button>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -187,8 +161,8 @@ function open_(app: ApplicationInterface) {
 }
 
 .sm-icon {
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
   object-fit: contain;
   flex-shrink: 0;
 }

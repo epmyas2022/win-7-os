@@ -4,23 +4,15 @@ import Option from './components/OptionComponent.vue'
 import Application from './components/ApplicationComponent.vue'
 import { useContextMenu } from './composable/useWindow.ts'
 import { useWindowStore } from './stores/window.ts'
-/* import { useApp } from './composable/useApp.ts'
- */
+import CRTEffect from 'vault66-crt-effect/vue'
+import 'vault66-crt-effect/style.css'
+
 const { showOption, coordinates, handleContextMenu } = useContextMenu()
 const store = useWindowStore()
-/* const { notepadApp } = useApp()
- */
-/* const Readme = notepadApp(
-  'https://raw.githubusercontent.com/github/docs/main/README.md',
-  false,
-  true,
-)
-
-Readme.run() */
 </script>
 
 <template>
-  <div>
+  <CRTEffect preset="apple2" theme="blue">
     <div
       class="app"
       @contextmenu.prevent="(event) => handleContextMenu(event, 200, 200)"
@@ -54,7 +46,7 @@ Readme.run() */
         </template>
       </div>
     </div>
-  </div>
+  </CRTEffect>
 
   <Option v-if="showOption" :x="coordinates.x" :y="coordinates.y" />
 </template>
