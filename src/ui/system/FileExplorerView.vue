@@ -80,7 +80,6 @@ function navigate(node: ApplicationInterface) {
   if (node.app) {
     return node.app().run()
   }
-  console.log(node)
   store.addProgramActive(node.id)
 }
 </script>
