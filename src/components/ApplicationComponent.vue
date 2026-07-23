@@ -82,5 +82,6 @@ const open = async () => {
   color: white;
   text-align: center;
   margin-top: 5px;
+  word-break: break-word;
 }
 </style>

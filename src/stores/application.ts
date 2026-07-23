@@ -39,14 +39,14 @@ export const useApplicationStore = defineStore('application', () => {
 
     {
       id: 1,
-      name: 'Readme.txt',
+      name: 'CMD_REFERENCE.md',
       desktop: true,
       icon: '/icons/txt.png',
       type: 'document',
       size: { width: 600, height: 400 },
       render: {
         props: {
-          content: `${import.meta.resolve('/assets/Sample.md')}`,
+          content: `${import.meta.resolve('/assets/CMD_REFERENCE.md')}`,
           showContentUrl: true,
         },
         component: markRaw(NotepadView),
@@ -288,7 +288,7 @@ export const useApplicationStore = defineStore('application', () => {
           whoami: (_args: string[], ctx: { push: (msg: string) => void }) => {
             ctx.push('USER-PC\\User')
           },
-      
+
           ipconfig: (_args: string[], ctx: { push: (msg: string) => void }) => {
             ctx.push('Windows IP Configuration')
             ctx.push('&nbsp;')

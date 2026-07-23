@@ -61,6 +61,19 @@ watch(
   padding: 10px;
   overflow-y: auto;
   max-height: calc(100% - 30px);
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.notepad-content :deep(h1) {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.notepad-content :deep(h2) {
+  font-size: 18px;
+  font-weight: bold;
 }
 
 .notepad-content :deep(p) {
