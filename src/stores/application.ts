@@ -232,44 +232,85 @@ export const useApplicationStore = defineStore('application', () => {
       render: {
         props: {
           name: 'Isaac Castillo',
-          title: 'Full Stack Developer',
+          title: 'Desarrollador Fullstack · Frontend · Backend · Móvil',
           avatar: '/assets/profile.jpg',
-          bio: 'Passionate developer with a love for building things. Replace this with your own bio.',
+          bio: 'Desarrollador Fullstack con más de 3 años de experiencia en aplicaciones web y móviles, enfocado en construir soluciones escalables y mantenibles. Aplico buenas prácticas como Clean Code y principios SOLID para garantizar calidad y rendimiento.',
           info: [
-            { label: 'Location', value: 'Your City, Country' },
-            { label: 'Email', value: 'you@example.com' },
-            { label: 'GitHub', value: 'github.com/youruser' },
-            { label: 'LinkedIn', value: 'linkedin.com/in/youruser' },
+            { label: 'Ubicación', value: 'El Salvador, San Salvador' },
+            { label: 'Correo', value: 'castillo20182017@gmail.com' },
+            { label: 'GitHub', value: 'github.com/epmyas2022' },
+            { label: 'LinkedIn', value: 'linkedin.com/in/isaac-castillo-b4a213225' },
           ],
           projects: [
             {
-              name: 'Epmyas OS',
-              description: 'A Windows 7-inspired OS simulation built with Vue 3.',
-              tags: ['Vue 3', 'TypeScript', 'Pinia'],
+              name: 'Auto-Generate Swagger',
+              description: 'Paquete que facilita la generación de documentación de APIs en Laravel utilizando Swagger UI.',
+              tags: ['Laravel', 'PHP', 'Swagger'],
             },
             {
-              name: 'Project Two',
-              description: 'Short description of what this project does.',
-              tags: ['React', 'Node.js'],
+              name: 'Reverse Shell',
+              description: 'Genera un payload de reverse shell en Python que se ejecuta en la máquina objetivo y se conecta a un servidor controlado por el atacante.',
+              tags: ['Python', 'Seguridad'],
+            },
+            {
+              name: 'Api Instagram Profile',
+              description: 'Scraping de la API de Instagram para obtener información de perfiles públicos como avatar y estadísticas.',
+              tags: ['Python', 'Scraping'],
+            },
+            {
+              name: 'Portfolio JSON',
+              description: 'Página web que genera un CV imprimible a partir de un archivo JSON de forma rápida y flexible.',
+              tags: ['HTML', 'JavaScript', 'CSS'],
+            },
+            {
+              name: 'App de Rick and Morty',
+              description: 'Aplicación que consume la API de Rick and Morty, muestra los personajes con sus características y permite filtrarlos por nombre y estado.',
+              tags: ['Vue', 'REST API'],
+            },
+            {
+              name: 'Vulnerabilidad en Portal Universitario',
+              description: 'Script que permite obtener información de estudiantes y la sesión de un usuario en el portal de la Universidad Pedagógica de El Salvador.',
+              tags: ['Python', 'Seguridad'],
+            },
+            {
+              name: 'Plugin de Animaciones para Tailwind CSS',
+              description: 'Plugin que implementa una serie de animaciones reutilizables para cualquier proyecto que use TailwindCSS.',
+              tags: ['TailwindCSS', 'JavaScript'],
+            },
+            {
+              name: 'Modelo ML de Emociones',
+              description: 'API de un modelo de detección de emociones entrenado con 25,000 textos clasificados como positivos, negativos o neutrales usando TensorFlow.',
+              tags: ['Python', 'TensorFlow', 'ML'],
             },
           ],
           experience: [
             {
-              role: 'Senior Developer',
-              company: 'Company Name',
-              period: '2022 – Present',
-              description: 'What you did there.',
+              role: 'Desarrollador Fullstack',
+              company: 'Secretaría de Innovación de la Presidencia',
+              period: '2024 – Actual',
+              description:
+                'Implementación de arquitecturas con microservicios y desarrollo de interfaces modernas con Vue, React y Angular. Aplicación de patrones de diseño para componentes reutilizables, integración con APIs REST y GraphQL, y desarrollo de plataformas frontend conectadas a backends modulares.',
             },
             {
-              role: 'Frontend Developer',
-              company: 'Previous Company',
-              period: '2019 – 2022',
+              role: 'Desarrollador Fullstack',
+              company: 'Ministerio de Salud de El Salvador',
+              period: '2023 – 2024',
+              description:
+                'Desarrollo de aplicaciones web bajo arquitectura de microservicios usando Vue, React, Angular y Laravel para APIs REST. Experiencia con MongoDB, PostgreSQL, contenedorización con Docker e integración de datos con Pentaho.',
+            },
+            {
+              role: 'Desarrollador Frontend',
+              company: 'Impressa Repuestos',
+              period: '2022 – 2023',
+              description:
+                'Desarrollo del frontend en React para un sistema de censos de talleres, con interfaces dinámicas y responsivas, componentes reutilizables e integración con APIs REST.',
             },
           ],
           funFacts: [
-            'I drink too much coffee.',
-            'I built my first website at age 14.',
-            'I love retro UI design.',
+            'Me gusta mucho el café ☕',
+            'Me gustan los gatos 🐱',
+            'Aprendí a programar desde los 15 años',
+            'Amo aprender cosas nuevas, especialmente sobre IA 🤖',
           ],
         },
         component: markRaw(ProfileView),
