@@ -67,7 +67,7 @@ const store = useWindowStore()
 
 const tree = store.applications.filter((app) => app.type === 'folder')
 
-const currentNode = ref<ApplicationInterface | null>(tree.at(props?.indexNode || 0) ?? null)
+const currentNode = ref<ApplicationInterface | null>(tree[props?.indexNode || 0] ?? null)
 const currentFolder = computed(() => currentNode.value?.name)
 const currentItems = computed(() => currentNode.value?.children ?? [])
 

@@ -68,7 +68,7 @@ const outputEl = ref<HTMLElement | null>(null)
 const cwd = ref(props.initialDir ?? 'C:\\')
 
 const interactive = ref<boolean>(true)
-const intervals = ref<number[]>([])
+const intervals = ref<ReturnType<typeof setInterval>[]>([])
 
 const store = useWindowStore()
 
@@ -163,7 +163,7 @@ const builtins: Record<string, CommandFn> = {
   help: (_args, { push }) => {
     push('Available commands:')
     push('&nbsp;')
-    const all = { ...builtins, ...(props.commands ?? {}) }
+    const all = { ...builtins, ...(props.commands) }
     for (const name of Object.keys(all).sort()) push(`  ${name}`)
     pushBlank()
   },
@@ -189,7 +189,7 @@ const builtins: Record<string, CommandFn> = {
       if (!app) {
         return store.applications
           .filter((app) => app.type === 'application')
-          .find((app) => `${app.name.replaceAll(' ', '').toLowerCase()}.exe` === name.toLowerCase())
+          .find((app) => `${app.name.replace(' ', '').toLowerCase()}.exe` === name.toLowerCase())
       }
 
       return app

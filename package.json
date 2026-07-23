@@ -13,19 +13,21 @@
     "lint": "run-s \"lint:*\"",
     "lint:oxlint": "oxlint . --fix",
     "lint:eslint": "eslint . --fix --cache",
-    "format": "prettier --write --experimental-cli src/"
+    "format": "prettier --write --experimental-cli src/",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist -b web"
   },
   "dependencies": {
     "@types/winbox": "^0.2.6",
     "7.css": "^0.21.1",
+    "gh-pages": "^6.3.0",
     "jspanel4": "^4.16.1",
     "marked": "^18.0.6",
     "pinia": "^3.0.4",
     "vault66-crt-effect": "^3.1.1",
     "vue": "^3.5.38",
     "vue-router": "^5.1.0",
-    "vue-winbox": "^0.2.3",
-    "winbox": "^0.2.82"
+    "vue-winbox": "^0.2.3"
   },
   "devDependencies": {
     "@tsconfig/node24": "^24.0.4",
