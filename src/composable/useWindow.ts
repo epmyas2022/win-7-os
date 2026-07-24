@@ -1,4 +1,5 @@
 import { ref, reactive } from 'vue'
+import { useBreakpoints, breakpointsTailwind } from '@vueuse/core'
 
 export function useContextMenu() {
   const showOption = ref(false)
@@ -32,8 +33,9 @@ export function useContextMenu() {
 }
 
 export function useWindow(width?: number, height?: number) {
+  const isMobile = useBreakpoints(breakpointsTailwind).smaller('md')
   const minimized = ref(false)
-  const maximized = ref(false)
+  const maximized = ref(isMobile.value)
   const pos = reactive({
     x: window.innerWidth / 2 - (width ?? 300) / 2,
     y: window.innerHeight / 2 - (height ?? 300) / 2,
@@ -66,5 +68,6 @@ export function useWindow(width?: number, height?: number) {
     maximized,
     pos,
     startDrag,
+    isMobile,
   }
 }

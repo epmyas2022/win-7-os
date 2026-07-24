@@ -25,7 +25,11 @@
           <div class="title-bar-text">{{ props.title }}</div>
           <div class="title-bar-controls">
             <button disabled aria-label="Minimize" @click="minimized = !minimized"></button>
-            <button aria-label="Maximize" @click="maximized = !maximized"></button>
+            <button
+              :disabled="isMobile"
+              aria-label="Maximize"
+              @click="maximized = !maximized"
+            ></button>
             <button aria-label="Close" @click="visible = false"></button>
           </div>
         </div>
@@ -60,7 +64,7 @@ const props = defineProps<{
 const store = useWindowStore()
 const visible = defineModel('modelValue', { type: Boolean, default: false })
 
-const { minimized, maximized, pos, startDrag } = useWindow(props.width, props.height)
+const { minimized, maximized, pos, startDrag, isMobile } = useWindow(props.width, props.height)
 
 const onClick = () => {
   store.bringToFrontProgram(props.id)

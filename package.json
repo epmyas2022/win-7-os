@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@types/winbox": "^0.2.6",
+    "@vueuse/core": "^14.3.0",
     "7.css": "^0.21.1",
     "gh-pages": "^6.3.0",
     "jspanel4": "^4.16.1",
